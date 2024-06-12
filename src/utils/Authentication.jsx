@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
-const useBearStore = create((set) => ({
-  bears: 0,
+const useAuthenticationStore = create((set) => ({
+  authenticated: false,
   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
   removeAllBears: () => set({ bears: 0 }),
 }));
 
-export default useBearStore;
+export default useAuthenticationStore;

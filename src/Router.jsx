@@ -4,16 +4,21 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import useBearStore from "./utils/Authentication";
+import useAuthenticationStore from "./utils/Authentication";
+import UnauthenticatedLayout from "./layout/UnauthenticatedLayout";
 
 export default function Router() {
-  const bears = useBearStore((state) => state.bears);
-  console.log(bears);
+  const authenticated = useAuthenticationStore((state) => state.authenticated);
+  console.log(authenticated);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: (
+        <UnauthenticatedLayout>
+          <Home />
+        </UnauthenticatedLayout>
+      ),
       //   element: (
       //     <Layout>{account ? <Navigate to="/dashboard" /> : <Landing />}</Layout>
       //   ),
