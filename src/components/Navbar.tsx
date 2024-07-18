@@ -1,11 +1,17 @@
 import { useConnect, useDisconnect } from "wagmi";
 import { injected } from "wagmi/connectors";
 import { useAccount } from "wagmi";
+import { toast } from "sonner"
 
 const Navbar = () => {
   const account = useAccount();
-  const { connect } = useConnect();
+  const { connect, isSuccess } = useConnect();
   const { disconnect } = useDisconnect();
+
+  const handleWalletConnect = async () => {
+    await connect({ connector: injected() })
+    if(isSuccess) toast("Login Successful!")
+  }
 
   return (
     <nav className="container mx-auto py-3 flex items-center justify-between text-sm">
@@ -13,10 +19,10 @@ const Navbar = () => {
         <a href="/" className="flex items-center gap-2">
           <img
             src="https://avatars.githubusercontent.com/u/172090446?s=48&v=4"
-            className="w-5"
+            className="w-7"
             alt=""
           />
-          <p className="font-semibold text-md">Ming</p>
+          <p className="font-semibold text-lg">Ming</p>
         </a>
         {/* <div>
           <Link to="/" className="[&.active]:font-semibold">
@@ -37,7 +43,7 @@ const Navbar = () => {
       ) : (
         <button
           className="font-semibold"
-          onClick={() => connect({ connector: injected() })}
+          onClick={() => handleWalletConnect()}
         >
           🗿Login
         </button>
