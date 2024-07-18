@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.logoText{
-    font-family: "Tiny5", sans-serif;
+* {
+  font-family: "Fira Code", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
