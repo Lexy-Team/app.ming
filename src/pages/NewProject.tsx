@@ -1,12 +1,34 @@
-import LanguageList from "@/components/LanguagesList";
 import { GitBranchIcon } from "lucide-react";
-import languages from "../utils/Languages.json";
-import frameworks from "../utils/Frameworks.json";
 import { useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+import frameworks from "../utils/Frameworks.json";
+import languages from "../utils/Languages.json";
+import LanguageList from "@/components/LanguagesList";
+
+interface FrameworkCommands {
+  build: string;
+  install: string;
+}
+
+interface Framework {
+  id: number;
+  name: string;
+  avatar: string;
+  outputDirectory: string;
+  commands: FrameworkCommands;
+}
 
 export default function NewProject() {
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
-  const [selectedFramework, setSelectedFramework] = useState({});
+  const [selectedFramework, setSelectedFramework] = useState<Framework | null>(
+    {}
+  );
 
   return (
     <div className="mt-8 container mx-auto max-w-7xl">
@@ -52,6 +74,11 @@ export default function NewProject() {
             </div>
           </div>
 
+          <div className="mt-2">
+            <p className="my-2 font-semibold">🧪 Environment Variables</p>
+            <textarea className="border w-[100%]" rows={5}></textarea>
+          </div>
+
           <ol className="relative border-s border-gray-200 dark:border-gray-700 mt-4">
             <li className="mb-4 ms-4">
               <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
@@ -66,24 +93,17 @@ export default function NewProject() {
               </time>
             </li>
           </ol>
-
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              width="16"
-              height="16"
-            >
-              <path d="M0 2.75C0 1.784.784 1 1.75 1H5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1h6.75c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H7.5c-.55 0-1.07-.26-1.4-.7l-.9-1.2a.25.25 0 0 0-.2-.1Z"></path>
-            </svg>
-            <p className="text-gray-500">./</p>
-          </div>
         </div>
-        <div className="flex-1 border-2 p-2 pb-3">
+
+        <div className="flex-1 border-2 p-2 pb-3 px-4">
           <p className="font-semibold">📜 Project Information</p>
 
           <p className="my-2">Project Name</p>
-          <input type="text" className="border w-[100%] px-1" placeholder="Some Awesome Name"/>
+          <input
+            type="text"
+            className="border w-[100%] px-1"
+            placeholder="Some Awesome Name"
+          />
 
           <p className="my-2">Language</p>
           <LanguageList
@@ -106,6 +126,50 @@ export default function NewProject() {
             placeholder="./"
             className="border w-[100%] px-1"
           />
+
+          <Accordion className="border px-2 my-2" type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <div className="flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    height="16"
+                  >
+                    <path d="M5.433 2.304A4.492 4.492 0 0 0 3.5 6c0 1.598.832 3.002 2.09 3.802.518.328.929.923.902 1.64v.008l-.164 3.337a.75.75 0 1 1-1.498-.073l.163-3.33c.002-.085-.05-.216-.207-.316A5.996 5.996 0 0 1 2 6a5.993 5.993 0 0 1 2.567-4.92 1.482 1.482 0 0 1 1.673-.04c.462.296.76.827.76 1.423v2.82c0 .082.041.16.11.206l.75.51a.25.25 0 0 0 .28 0l.75-.51A.249.249 0 0 0 9 5.282V2.463c0-.596.298-1.127.76-1.423a1.482 1.482 0 0 1 1.673.04A5.993 5.993 0 0 1 14 6a5.996 5.996 0 0 1-2.786 5.068c-.157.1-.209.23-.207.315l.163 3.33a.752.752 0 0 1-1.094.714.75.75 0 0 1-.404-.64l-.164-3.345c-.027-.717.384-1.312.902-1.64A4.495 4.495 0 0 0 12.5 6a4.492 4.492 0 0 0-1.933-3.696c-.024.017-.067.067-.067.16v2.818a1.75 1.75 0 0 1-.767 1.448l-.75.51a1.75 1.75 0 0 1-1.966 0l-.75-.51A1.75 1.75 0 0 1 5.5 5.282V2.463c0-.092-.043-.142-.067-.159Z"></path>
+                  </svg>
+                  <p>Build and Output Settings</p>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className="mb-2">Build Command</p>
+                <input
+                  type="text"
+                  className="border w-[100%] px-1"
+                  placeholder={selectedFramework?.commands?.build}
+                />
+
+                <p className="my-2">Output Directory</p>
+                <input
+                  type="text"
+                  className="border w-[100%] px-1"
+                  placeholder={selectedFramework?.outputDirectory}
+                />
+
+                <p className="my-2">Install Command</p>
+                <input
+                  type="text"
+                  className="border w-[100%] px-1"
+                  placeholder={selectedFramework?.commands?.install}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <button className="w-[100%] bg-black text-white py-2 font-semibold cursor-pointer">
+            Deploy
+          </button>
         </div>
       </div>
     </div>

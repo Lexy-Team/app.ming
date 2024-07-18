@@ -1,5 +1,6 @@
 import { useState } from "react";
 import NewProject from "./NewProject";
+import Projects from "@/components/Projects";
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("");
@@ -29,6 +30,10 @@ export default function Dashboard() {
           + Project
         </button>
       </div>
+
+      {
+        activePage === "" && <Projects/>
+      }
 
       {activePage === "/new_project" && <NewProject />}
     </div>
